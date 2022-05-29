@@ -45,6 +45,8 @@ function Api() {
   //     BOOMTOWN_PUBLIC_MEMBERS
   //   );
   //   const [avatarData, setAvatarData] = useState(BOOMTOWN_AVATAR);
+  //   const [error, setError] = useState();
+  //   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
     try {
@@ -208,6 +210,7 @@ function Api() {
             <Card border="secondary" style={{ width: "18rem" }}>
               <Card.Img
                 variant="top"
+                alt="member avatar"
                 src={member.avatar_url}
                 style={{ borderRadius: "50%" }}
               />
@@ -241,6 +244,7 @@ function Api() {
             <Card border="secondary" style={{ width: "18rem" }}>
               <Card.Img
                 variant="top"
+                alt="member avatar"
                 src={member.avatar_url}
                 style={{ borderRadius: "50%" }}
               />
@@ -284,14 +288,29 @@ function Api() {
         <p>ID: {apiData?.id}</p>
         <p>Name: {apiData?.name}</p>
         <p>
-          URL: <a href={apiData?.html_url}>{apiData?.html_url}</a>
+          URL:{" "}
+          <a id="api-url" href={apiData?.html_url}>
+            {apiData?.html_url}
+          </a>
         </p>
         <p>Verified: {apiData?.is_verified?.toString().toUpperCase()}</p>
-        <p style={createdBefore ? { color: "red" } : { color: "green" }}>
+        <p
+          style={
+            createdBefore
+              ? { color: "red", fontSize: 24 }
+              : { color: "green", fontSize: 24 }
+          }
+        >
           {createdBefore ? "(Older) " : "(More Recent) "}
           Created At: {apiData?.created_at}{" "}
         </p>
-        <p style={createdBefore ? { color: "green" } : { color: "red" }}>
+        <p
+          style={
+            createdBefore
+              ? { color: "green", fontSize: 24 }
+              : { color: "red", fontSize: 24 }
+          }
+        >
           {createdBefore ? "(More Recent) " : "(Older) "}
           Updated At: {apiData?.updated_at}{" "}
         </p>
@@ -306,7 +325,9 @@ function Api() {
           className="data-container"
           style={{ paddingTop: 70 }}
         >
-          <h1>API RESULTS</h1>
+          <main>
+            <h1>API RESULTS</h1>
+          </main>
           {renderOrganizationData()}
         </div>
         <div
@@ -368,10 +389,10 @@ function Api() {
   }
   function renderApiError() {
     return (
-      <div style={{ paddingTop: 50 }}>
+      <div role="contentinfo" style={{ paddingTop: 50 }}>
         <img alt="BOOMERROR" src={boomError} />
 
-        <p style={{ color: "red" }}>{apiError}</p>
+        <p style={{ fontSize: 30, color: "red" }}>{apiError}</p>
       </div>
     );
   }

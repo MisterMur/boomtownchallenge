@@ -9,7 +9,7 @@ export default function Navbar() {
       <a
         href="#organization-data"
         className="brand-name"
-        style={{ color: "white" }}
+        style={{ color: "black", fontSize: 23, fontWeight: 400 }}
       >
         BoomtownROI
       </a>
@@ -41,6 +41,7 @@ export default function Navbar() {
         <ul>
           <li>
             <a
+              style={{ color: "black" }}
               href="#repo-data"
               onClick={() => {
                 setIsNavExpanded(!isNavExpanded);
@@ -51,6 +52,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
+              style={{ color: "black" }}
               href="#event-data"
               onClick={() => {
                 setIsNavExpanded(!isNavExpanded);
@@ -61,6 +63,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
+              style={{ color: "black" }}
               href="#hooks-data"
               onClick={() => {
                 setIsNavExpanded(!isNavExpanded);
@@ -71,6 +74,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
+              style={{ color: "black" }}
               href="#issues-data"
               onClick={() => {
                 setIsNavExpanded(!isNavExpanded);
@@ -81,6 +85,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
+              style={{ color: "black" }}
               href="#members-data"
               onClick={() => {
                 setIsNavExpanded(!isNavExpanded);
@@ -91,6 +96,7 @@ export default function Navbar() {
           </li>
           <li>
             <a
+              style={{ color: "black" }}
               href="#public-members-data"
               onClick={() => {
                 setIsNavExpanded(!isNavExpanded);

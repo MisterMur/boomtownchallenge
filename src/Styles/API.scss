@@ -1,33 +1,23 @@
-// card-group {
-//   margin: 0 -15px;
-//   justify-content: space-between;
-// }
+@media (min-width: 576px) and (max-width: 767.98px) {
+  card-group card {
+    -ms-flex: 0 0 48.7%;
+    flex: 0 0 48.7%;
+  }
+}
 
-// card-group card {
-//   // border: 1px;
-//   margin: 0 0 1rem;
-// }
+@media (min-width: 768px) and (max-width: 991.98px) {
+  card-group card {
+    -ms-flex: 0 0 32%;
+    flex: 0 0 32%;
+  }
+}
 
-// @media (min-width: 576px) and (max-width: 767.98px) {
-//   card-group card {
-//     -ms-flex: 0 0 48.7%;
-//     flex: 0 0 48.7%;
-//   }
-// }
-
-// @media (min-width: 768px) and (max-width: 991.98px) {
-//   card-group card {
-//     -ms-flex: 0 0 32%;
-//     flex: 0 0 32%;
-//   }
-// }
-
-// @media (min-width: 992px) {
-//   card-group card {
-//     -ms-flex: 0 0 24%;
-//     flex: 0 0 24%;
-//   }
-// }
+@media (min-width: 992px) {
+  card-group card {
+    -ms-flex: 0 0 24%;
+    flex: 0 0 24%;
+  }
+}
 .card-group {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -36,4 +26,7 @@
 .card {
   margin-right: auto;
   margin-left: auto;
+}
+a {
+  font-size: 24px;
 }
