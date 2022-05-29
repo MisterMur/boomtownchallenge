@@ -7,6 +7,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import boomError from "./BoomError.jpeg";
 import { BOOMTOWN_DATA } from "./Data/boomtown";
 import { BOOMTOWN_REPOS } from "./Data/boomtown_repos";
 import { BOOMTOWN_PUBLIC_MEMBERS } from "./Data/boomtown_public_members";
@@ -367,7 +368,9 @@ function Api() {
   }
   function renderApiError() {
     return (
-      <div style={{ paddingTop: 500 }}>
+      <div style={{ paddingTop: 50 }}>
+        <img alt="BOOMERROR" src={boomError} />
+
         <p style={{ color: "red" }}>{apiError}</p>
       </div>
     );
