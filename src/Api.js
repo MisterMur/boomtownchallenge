@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardGroup, ListGroup, ListGroupItem } from "react-bootstrap";
+import {
+  Card,
+  CardGroup,
+  ListGroup,
+  ListGroupItem,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { BOOMTOWN_DATA } from "./Data/boomtown";
 import { BOOMTOWN_REPOS } from "./Data/boomtown_repos";
 import { BOOMTOWN_PUBLIC_MEMBERS } from "./Data/boomtown_public_members";
@@ -13,42 +20,46 @@ const API_URL = "https://api.github.com/orgs/boomtownroi";
 
 function Api() {
   // Use these when requesting data from API
-  //   const [apiUrl, setApiUrl] = useState(API_URL);
-  //   const [apiData, setApiData] = useState({});
-  //   const [repoData, setRepoData] = useState([]);
-  //   const [eventsData, setEventsData] = useState([]);
-  //   const [hooksData, setHooksData] = useState({});
-  //   const [issuesData, setIssuesData] = useState({});
-  //   const [membersData, setMembersData] = useState({});
-  //   const [publicMembersData, setPublicMembersData] = useState({});
-  //   const [avatarData, setAvatarData] = useState({});
+  const [apiUrl, setApiUrl] = useState(API_URL);
+  const [apiData, setApiData] = useState({});
+  const [repoData, setRepoData] = useState([]);
+  const [eventsData, setEventsData] = useState([]);
+  const [hooksData, setHooksData] = useState({});
+  const [issuesData, setIssuesData] = useState({});
+  const [membersData, setMembersData] = useState([]);
+  const [publicMembersData, setPublicMembersData] = useState([]);
+  const [avatarData, setAvatarData] = useState({});
+  const [error, setError] = useState();
+  const [apiError, setApiError] = useState("");
 
   // Use these as init state instead of sending requests to API
-  const [apiUrl, setApiUrl] = useState(API_URL);
-  const [apiData, setApiData] = useState(BOOMTOWN_DATA);
-  const [repoData, setRepoData] = useState(BOOMTOWN_REPOS);
-  const [eventsData, setEventsData] = useState(BOOMTOWN_EVENTS);
-  const [hooksData, setHooksData] = useState(BOOMTOWN_HOOKS);
-  const [issuesData, setIssuesData] = useState(BOOMTOWN_ISSUES);
-  const [membersData, setMembersData] = useState(BOOMTOWN_MEMBERS);
-  const [publicMembersData, setPublicMembersData] = useState(
-    BOOMTOWN_PUBLIC_MEMBERS
-  );
-  const [avatarData, setAvatarData] = useState(BOOMTOWN_AVATAR);
+  //   const [apiUrl, setApiUrl] = useState(API_URL);
+  //   const [apiData, setApiData] = useState(BOOMTOWN_DATA);
+  //   const [repoData, setRepoData] = useState(BOOMTOWN_REPOS);
+  //   const [eventsData, setEventsData] = useState(BOOMTOWN_EVENTS);
+  //   const [hooksData, setHooksData] = useState(BOOMTOWN_HOOKS);
+  //   const [issuesData, setIssuesData] = useState(BOOMTOWN_ISSUES);
+  //   const [membersData, setMembersData] = useState(BOOMTOWN_MEMBERS);
+  //   const [publicMembersData, setPublicMembersData] = useState(
+  //     BOOMTOWN_PUBLIC_MEMBERS
+  //   );
+  //   const [avatarData, setAvatarData] = useState(BOOMTOWN_AVATAR);
 
-  //   useEffect(() => {
-  //     fetch(apiUrl, {
-  //       method: "GET",
-  //       headers: { "Content-Type": "application/json" },
-  //     })
-  //       .then((res) =>
-  //         res.status === 200 ? res.json() : new Error("request failed")
-  //       )
-  //       .then((data) => {
-  //         console.log("api data", data);
-  //         setApiData(data);
-  //       });
-  //   }, [apiUrl]);
+  useEffect(() => {
+    try {
+      const response = fetch(apiUrl)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.message) {
+            setApiError(data.message);
+          } else {
+            setApiData(data);
+          }
+        });
+    } catch (e) {
+      setError(e);
+    }
+  }, [apiUrl]);
 
   const {
     repos_url,
@@ -59,33 +70,73 @@ function Api() {
     public_members_url,
     avatar_url,
   } = apiData;
-  //   useFetch(repos_url).then((d) => setRepoData(d));
-  //   useFetch(events_url).then((d) => setEventsData(d));
-  //   useFetch(hooks_url).then((d) => setHooksData(d));
-  //   useFetch(issues_url).then((d) => setIssuesData(d));
-  //   useFetch(members_url).then((d) => setMembersData(d));
-  //   useFetch(avatar_url).then((d) => setAvatarData(d));
+  let membersUrl = members_url?.replace("{/member}", "");
+  let publicMembersUrl = public_members_url?.replace("{/member}", "");
 
-  console.log("repoData", repoData);
-  console.log("eventsData", eventsData);
-  console.log("hooksdata", hooksData);
-  console.log("issuesdata", issuesData);
-  console.log("membersdata", membersData);
-  console.log("membersdata", publicMembersData);
-  console.log("avatardata", avatarData);
+  useFetch(repos_url).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setRepoData(d);
+    }
+  });
+  useFetch(events_url).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setEventsData(d);
+    }
+  });
+  useFetch(hooks_url).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setHooksData(d);
+    }
+  });
+  useFetch(issues_url).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setIssuesData(d);
+    }
+  });
+  useFetch(membersUrl).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setMembersData(d);
+    }
+  });
+  useFetch(publicMembersUrl).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setPublicMembersData(d);
+    }
+  });
+  useFetch(avatar_url).then((d) => {
+    if (Object.keys(d).length !== 0) {
+      setAvatarData(d);
+    }
+  });
+
+  //   console.log("repoData", repoData);
+  //   console.log("eventsData", eventsData);
+  //   console.log("hooksdata", hooksData);
+  //   console.log("issuesdata", issuesData);
+  //   console.log("membersdata", membersData);
+  //   console.log("membersdata", publicMembersData);
+  //   console.log("avatardata", avatarData);
 
   function renderEventsData() {
     return (
-      eventsData &&
+      eventsData !== [] &&
       eventsData.map((event, idx) => {
         return (
-          <div key={idx}>
-            <h2>Event {idx + 1}</h2>
-            <p>***************</p>
-            <p>Event ID: {event.id}</p>
-            <p>Repo Name: {event.repo.name}</p>
-            <p>Repo Url: {event.repo.url}</p>
-            <p>created_at: {event.created_at}</p>
+          <div className="card-container" key={idx}>
+            <Card border="secondary" style={{ width: "18rem" }}>
+              <Card.Body>
+                <Card.Title>Event {idx + 1}:</Card.Title>
+                <Card.Text>Event ID: {event.id}</Card.Text>
+              </Card.Body>
+              <ListGroup className="list-group-flush">
+                <ListGroupItem>Created At: {event.created_at}</ListGroupItem>
+                <ListGroupItem>Repo Name: {event.repo.name}</ListGroupItem>
+              </ListGroup>
+              <Card.Body>
+                <p>Repo URL:</p>
+                <Card.Link href={event.repo.url}>{event.repo.url}</Card.Link>
+              </Card.Body>
+            </Card>
           </div>
         );
       })
@@ -102,38 +153,57 @@ function Api() {
 
   function renderRepoData() {
     return (
-      repoData &&
-      repoData.map((repo, idx) => {
+      repoData !== [] &&
+      repoData?.map((repo, idx) => {
         return (
-          <div key={idx}>
-            <h2>Repo {idx + 1}</h2>
-            <p>***************</p>
-
-            <p>Repo id:{repo.id}</p>
-            <p>Repo Name: {repo.name}</p>
-            <p>Html_url: {repo.html_url}</p>
-            <p>description: {repo.description}</p>
-            <p>language: {repo.language}</p>
-            <p>created_at:{repo.created_at}</p>
-            <p>updated_at:{repo.updated_at}</p>
-            <p>pushed_at:{repo.pushed_at}</p>
+          <div className="card-container" key={idx}>
+            <Card border="secondary" style={{ width: "18rem" }}>
+              <Card.Body>
+                <Card.Title>
+                  Repo {idx + 1}: {repo.name}
+                </Card.Title>
+                <Card.Text>Repo ID: {repo.id}</Card.Text>
+              </Card.Body>
+              <ListGroup className="list-group-flush">
+                <ListGroupItem>Language: {repo.language}</ListGroupItem>
+                <ListGroupItem>Created At: {repo.created_at}</ListGroupItem>
+                <ListGroupItem>Updated At: {repo.updated_at}</ListGroupItem>
+                <ListGroupItem>Pushed At: {repo.pushed_at}</ListGroupItem>
+              </ListGroup>
+              <Card.Body>
+                <p>Description: {repo.description}</p>
+                <Card.Link href={repo.html_url}> {repo.html_url}</Card.Link>
+              </Card.Body>
+            </Card>
           </div>
         );
       })
     );
   }
   function renderHooksData() {
-    return <></>;
+    return hooksData && hooksData.message ? (
+      <>
+        <h3 style={{ color: "red" }}>{hooksData.message}</h3>
+      </>
+    ) : (
+      <>{/* handle data if hooksdata is precences here */}</>
+    );
   }
   function renderIssuesData() {
-    return <></>;
+    return issuesData && issuesData.message ? (
+      <>
+        <h3 style={{ color: "red" }}>{issuesData.message}</h3>
+      </>
+    ) : (
+      <>{/* handle data if issuesdata is precences here */}</>
+    );
   }
   function renderMembersData() {
     return (
-      membersData &&
+      membersData !== [] &&
       membersData.map((member, idx) => {
         return (
-          <div key={idx}>
+          <div className="card-container" key={idx}>
             <Card border="secondary" style={{ width: "18rem" }}>
               <Card.Img
                 variant="top"
@@ -148,10 +218,12 @@ function Api() {
               </Card.Body>
               <ListGroup className="list-group-flush">
                 <ListGroupItem>Type: {member.type}</ListGroupItem>
-                <ListGroupItem>Site_admin: {member.site_admin}</ListGroupItem>
+                <ListGroupItem>
+                  Site Admin: {member.site_admin.toString().toUpperCase()}
+                </ListGroupItem>
               </ListGroup>
               <Card.Body>
-                <Card.Link href="#"> {member.html_url}</Card.Link>
+                <Card.Link href={member.html_url}> {member.html_url}</Card.Link>
               </Card.Body>
             </Card>
           </div>
@@ -161,10 +233,10 @@ function Api() {
   }
   function renderPublicMembersData() {
     return (
-      publicMembersData &&
+      publicMembersData !== [] &&
       publicMembersData.map((member, idx) => {
         return (
-          <div key={idx}>
+          <div className="card-container" key={idx}>
             <Card border="secondary" style={{ width: "18rem" }}>
               <Card.Img
                 variant="top"
@@ -179,10 +251,12 @@ function Api() {
               </Card.Body>
               <ListGroup className="list-group-flush">
                 <ListGroupItem>Type: {member.type}</ListGroupItem>
-                <ListGroupItem>Site_admin: {member.site_admin}</ListGroupItem>
+                <ListGroupItem>
+                  Site Admin: {member.site_admin.toString().toUpperCase()}
+                </ListGroupItem>
               </ListGroup>
               <Card.Body>
-                <Card.Link href="#"> {member.html_url}</Card.Link>
+                <Card.Link href={member.html_url}> {member.html_url}</Card.Link>
               </Card.Body>
             </Card>
           </div>
@@ -190,38 +264,116 @@ function Api() {
       })
     );
   }
+  function renderOrganizationData() {
+    let createdBefore = false;
+    if (Date.parse(apiData.created_at) < Date.parse(apiData.updated_at)) {
+      //created_at is before updated_at
+      createdBefore = true;
+    } else if (
+      Date.parse(apiData.created_at) > Date.parse(apiData.updated_at)
+    ) {
+      //created_at is after than updated_at
+      createdBefore = false;
+    } else {
+      //created and updated same time
+    }
 
-  return (
-    <>
-      <h1>API RESULTS</h1>
-      <p>ID: {apiData.id}</p>
-      <p>Name: {apiData.name}</p>
-      <p>html_url: {apiData.html_url}</p>
-      <p>is_verified: {apiData.is_verified}</p>
-      <p>created_at: {apiData.created_at}</p>
-      <p>updated_at: {apiData.updated_at}</p>
-      <h1>REPO RESULTS</h1>
-      {renderRepoData()}
+    return (
+      <>
+        <p>ID: {apiData?.id}</p>
+        <p>Name: {apiData?.name}</p>
+        <p>
+          URL: <a href={apiData?.html_url}>{apiData?.html_url}</a>
+        </p>
+        <p>Verified: {apiData?.is_verified?.toString().toUpperCase()}</p>
+        <p style={createdBefore ? { color: "red" } : { color: "green" }}>
+          {createdBefore ? "(Older) " : "(More Recent) "}
+          Created At: {apiData?.created_at}{" "}
+        </p>
+        <p style={createdBefore ? { color: "green" } : { color: "red" }}>
+          {createdBefore ? "(More Recent) " : "(Older) "}
+          Updated At: {apiData?.updated_at}{" "}
+        </p>
+      </>
+    );
+  }
+  function renderScreen() {
+    return (
+      <>
+        <div
+          id="organization-data"
+          className="data-container"
+          style={{ paddingTop: 70 }}
+        >
+          <h1>API RESULTS</h1>
+          {renderOrganizationData()}
+        </div>
+        <div
+          id="repo-data"
+          className="data-container"
+          style={{ paddingTop: 70 }}
+        >
+          <h1>Repo Data</h1>
 
-      <h1>Event RESULTS</h1>
-      {renderEventsData()}
+          <CardGroup className="card-group">{renderRepoData()}</CardGroup>
+        </div>
 
-      <h1>Hooks Data</h1>
-      {renderHooksData()}
+        <div
+          id="event-data"
+          className="data-container"
+          style={{ paddingTop: 70 }}
+        >
+          <h1>Event Data</h1>
+          <CardGroup className="card-group">{renderEventsData()}</CardGroup>
+        </div>
 
-      <h1>Issues Data</h1>
-      {renderIssuesData()}
+        <div id="hooks-data" style={{ paddingTop: 70 }}>
+          <h1>Hooks Data</h1>
+          {renderHooksData()}
+        </div>
+        <div
+          id="issues-data"
+          className="data-container"
+          style={{ paddingTop: 70 }}
+        >
+          <h1>Issues Data</h1>
+          <CardGroup className="card-group">{renderIssuesData()}</CardGroup>
+        </div>
 
-      <h1>Members</h1>
-      <CardGroup className="card-group">{renderMembersData()}</CardGroup>
+        <div
+          id="members-data"
+          className="data-container"
+          style={{ paddingTop: 70 }}
+        >
+          <h1>Members</h1>
+          <CardGroup className="card-group">{renderMembersData()}</CardGroup>
+        </div>
 
-      <h2>Public Members</h2>
-      <CardGroup className="card-group">{renderPublicMembersData()}</CardGroup>
+        <div
+          id="public-members-data"
+          className="data-container"
+          style={{ paddingTop: 70 }}
+        >
+          <h2>Public Members</h2>
+          <CardGroup className="card-group">
+            {renderPublicMembersData()}
+          </CardGroup>
+        </div>
 
-      <h1>Avatar</h1>
-      {renderAvatar(avatar_url)}
-    </>
-  );
+        <h1>Avatar</h1>
+        {renderAvatar(avatar_url)}
+      </>
+    );
+  }
+  function renderApiError() {
+    return (
+      <div style={{ paddingTop: 500 }}>
+        <p style={{ color: "red" }}>{apiError}</p>
+      </div>
+    );
+  }
+
+  return <>{apiError ? renderApiError() : renderScreen()}</>;
 }
 
 const useFetch = async (url) => {
