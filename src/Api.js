@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardGroup,
-  ListGroup,
-  ListGroupItem,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Card, CardGroup, ListGroup, ListGroupItem } from "react-bootstrap";
 import boomError from "./BoomError.jpeg";
-import { BOOMTOWN_DATA } from "./Data/boomtown";
-import { BOOMTOWN_REPOS } from "./Data/boomtown_repos";
-import { BOOMTOWN_PUBLIC_MEMBERS } from "./Data/boomtown_public_members";
-import { BOOMTOWN_AVATAR } from "./Data/Boomtown_avatar";
-import { BOOMTOWN_EVENTS } from "./Data/boomtown_events";
-import { BOOMTOWN_MEMBERS } from "./Data/boomtown_members";
-import { BOOMTOWN_ISSUES } from "./Data/Boomtown_issues";
-import { BOOMTOWN_HOOKS } from "./Data/Boomtown_hooks";
+// import { BOOMTOWN_DATA } from "./Data/boomtown";
+// import { BOOMTOWN_REPOS } from "./Data/boomtown_repos";
+// import { BOOMTOWN_PUBLIC_MEMBERS } from "./Data/boomtown_public_members";
+// import { BOOMTOWN_AVATAR } from "./Data/Boomtown_avatar";
+// import { BOOMTOWN_EVENTS } from "./Data/boomtown_events";
+// import { BOOMTOWN_MEMBERS } from "./Data/boomtown_members";
+// import { BOOMTOWN_ISSUES } from "./Data/Boomtown_issues";
+// import { BOOMTOWN_HOOKS } from "./Data/Boomtown_hooks";
 import "./Styles/API.scss";
 const API_URL = "https://api.github.com/orgs/boomtownroi";
 
 function Api() {
   // Use these when requesting data from API
-  const [apiUrl, setApiUrl] = useState(API_URL);
+  const [apiUrl] = useState(API_URL);
   const [apiData, setApiData] = useState({});
   const [repoData, setRepoData] = useState([]);
   const [eventsData, setEventsData] = useState([]);
@@ -29,8 +22,6 @@ function Api() {
   const [issuesData, setIssuesData] = useState({});
   const [membersData, setMembersData] = useState([]);
   const [publicMembersData, setPublicMembersData] = useState([]);
-  const [avatarData, setAvatarData] = useState({});
-  const [error, setError] = useState();
   const [apiError, setApiError] = useState("");
 
   // Use these as init state instead of sending requests to API
@@ -44,13 +35,12 @@ function Api() {
   //   const [publicMembersData, setPublicMembersData] = useState(
   //     BOOMTOWN_PUBLIC_MEMBERS
   //   );
-  //   const [avatarData, setAvatarData] = useState(BOOMTOWN_AVATAR);
   //   const [error, setError] = useState();
   //   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
     try {
-      const response = fetch(apiUrl)
+      fetch(apiUrl)
         .then((r) => r.json())
         .then((data) => {
           if (data.message) {
@@ -60,7 +50,7 @@ function Api() {
           }
         });
     } catch (e) {
-      setError(e);
+      setApiError(e);
     }
   }, [apiUrl]);
 
@@ -106,11 +96,11 @@ function Api() {
       setPublicMembersData(d);
     }
   });
-  useFetch(avatar_url).then((d) => {
-    if (Object.keys(d).length !== 0) {
-      setAvatarData(d);
-    }
-  });
+  //   useFetch(avatar_url).then((d) => {
+  //     if (Object.keys(d).length !== 0) {
+  //       setAvatarData(d);
+  //     }
+  //   });
 
   //   console.log("repoData", repoData);
   //   console.log("eventsData", eventsData);
@@ -402,16 +392,17 @@ function Api() {
 
 const useFetch = async (url) => {
   const [apiData, setApiData] = useState({});
-  const [error, setError] = useState();
+  //   const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(url)
+        await fetch(url)
           .then((r) => r.json())
           .then((data) => setApiData(data));
       } catch (e) {
-        setError(e);
+        setApiData(e);
+        // setError(e);
       }
     }
 
