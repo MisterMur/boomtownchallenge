@@ -130,7 +130,7 @@ function BoomtownScreen() {
     return (
       <div role="contentinfo" style={{ paddingTop: 50 }}>
         <main>
-          <img alt="BOOMERROR" src={boomError} />
+          <img alt="BOOMERROR" aria-label="boomerror" src={boomError} />
           <p style={{ fontSize: 30, color: "red" }}>{apiError}</p>
         </main>
       </div>
