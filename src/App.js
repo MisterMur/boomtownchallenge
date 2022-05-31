@@ -1,11 +1,11 @@
 import "./App.css";
-import Api from "./Api";
+import BoomtownScreen from "./BoomtownScreen";
 import Navigation from "./Navigation";
 function App() {
   return (
     <div className="App">
       <Navigation />
-      <Api />
+      <BoomtownScreen />
     </div>
   );
 }
