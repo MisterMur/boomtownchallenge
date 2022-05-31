@@ -18,12 +18,14 @@ function BoomtownScreen() {
 
   // Use this when requesting data from API
   const [apiData, setApiData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   //   Use these as init state instead of sending requests to API
   // const [apiData, setApiData] = useState(BOOMTOWN_DATA);
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
+    setIsLoading(true);
     try {
       fetch(apiUrl)
         .then((r) => r.json())
@@ -32,10 +34,12 @@ function BoomtownScreen() {
             setApiError(data.message);
           } else {
             setApiData(data);
+            setIsLoading(false);
           }
         });
     } catch (e) {
       setApiError(e);
+      setIsLoading(false);
     }
   }, [apiUrl]);
 
@@ -109,7 +113,7 @@ function BoomtownScreen() {
   function renderScreen() {
     return (
       <>
-        {apiData !== {} ? (
+        {apiData !== {} && !isLoading ? (
           <>
             {renderOrganizationData()}
             <Repos reposUrl={repos_url} />
